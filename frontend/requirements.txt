@@ -1,0 +1,5 @@
+flask
+firebase-admin
+pymongo==4.3.3
+pymongo[zstd]
+pymongo[srv]
