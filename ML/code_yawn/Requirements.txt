@@ -1,0 +1,7 @@
+Flask
+numpy
+opencv-python
+dlib
+paho-mqtt
+scipy
+imutils

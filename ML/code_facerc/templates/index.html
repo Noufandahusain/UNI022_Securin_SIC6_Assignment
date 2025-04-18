@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP32-CAM Face Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .live-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .camera-feed {
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .live-image {
+            width: 100%;
+            max-width: 640px;
+            border: 1px solid #ddd;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+        }
+        .gallery-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .gallery-item img {
+            width: 100%;
+        }
+        .gallery-item p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        .refresh-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function refreshImages() {
+            const originalImg = document.getElementById('originalImage');
+            const processedImg = document.getElementById('processedImage');
+            
+            // Add timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            originalImg.src = '/view?' + timestamp;
+            processedImg.src = '/view-processed?' + timestamp;
+        }
+        
+        // Auto-refresh the images every 1 second
+        setInterval(refreshImages, 1000);
+        
+        function refreshPage() {
+            location.reload();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>ESP32-CAM Face Recognition System</h1>
+        
+        <div class="live-container">
+            <div class="camera-feed">
+                <h2>Original Camera Feed</h2>
+                <img id="originalImage" class="live-image" src="/view" alt="Live Camera Feed">
+            </div>
+            
+            <div class="camera-feed">
+                <h2>Processed Feed (Face Detection)</h2>
+                <img id="processedImage" class="live-image" src="/view-processed" alt="Processed Camera Feed">
+            </div>
+        </div>
+        
+        <button class="refresh-btn" onclick="refreshPage()">Refresh Gallery</button>
+        
+        <h2>Image Gallery</h2>
+        <div class="gallery">
+            {% for image in image_files %}
+                <div class="gallery-item">
+                    <img src="/image/{{ image }}" alt="{{ image }}">
+                    <p>{{ image }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+        
